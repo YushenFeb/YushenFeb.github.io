@@ -245,48 +245,6 @@
     
     <div class="category row nomargin-x">
       <a class="category-item collapsed
-          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="Block Chain"
-        id="heading-2ede1524eb419c1262b96ba482a669da" role="tab" data-toggle="collapse" href="#collapse-2ede1524eb419c1262b96ba482a669da"
-        aria-expanded="false"
-      >
-        Block Chain
-        <span class="list-group-count"></span>
-        <i class="iconfont icon-arrowright"></i>
-      </a>
-      
-        <a href="/categories/Block-Chain/" class="category-count col-2 col-md-1 col-xm-1">
-          <i class="iconfont icon-articles"></i>
-          <span>1</span>
-        </a>
-      
-      <div class="category-collapse collapse " id="collapse-2ede1524eb419c1262b96ba482a669da"
-           role="tabpanel" aria-labelledby="heading-2ede1524eb419c1262b96ba482a669da">
-        
-        
-          
-  <div class="category-post-list">
-    
-    
-      
-      
-        <a href="/2025/10/25/BIP39/" title="BIP39编码及点阵图 BIP39 Encoding And DotMap"
-           class="list-group-item list-group-item-action
-           ">
-          <span class="category-post">BIP39编码及点阵图 BIP39 Encoding And DotMap</span>
-        </a>
-      
-    
-  </div>
-
-        
-      </div>
-    </div>
-  
-    
-    
-    
-    <div class="category row nomargin-x">
-      <a class="category-item collapsed
           list-group-item category-item-action col-10 col-md-11 col-xm-11" title="博客第一天"
         id="heading-8e713737a6aad72e069b608694f756e5" role="tab" data-toggle="collapse" href="#collapse-8e713737a6aad72e069b608694f756e5"
         aria-expanded="false"
@@ -315,6 +273,48 @@
            class="list-group-item list-group-item-action
            ">
           <span class="category-post">博客第一天 First Day Of The Blog</span>
+        </a>
+      
+    
+  </div>
+
+        
+      </div>
+    </div>
+  
+    
+    
+    
+    <div class="category row nomargin-x">
+      <a class="category-item collapsed
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="Block Chain"
+        id="heading-2ede1524eb419c1262b96ba482a669da" role="tab" data-toggle="collapse" href="#collapse-2ede1524eb419c1262b96ba482a669da"
+        aria-expanded="false"
+      >
+        Block Chain
+        <span class="list-group-count"></span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+        <a href="/categories/Block-Chain/" class="category-count col-2 col-md-1 col-xm-1">
+          <i class="iconfont icon-articles"></i>
+          <span>1</span>
+        </a>
+      
+      <div class="category-collapse collapse " id="collapse-2ede1524eb419c1262b96ba482a669da"
+           role="tabpanel" aria-labelledby="heading-2ede1524eb419c1262b96ba482a669da">
+        
+        
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/2025/10/25/BIP39/" title="BIP39编码及点阵图 BIP39 Encoding And DotMap"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">BIP39编码及点阵图 BIP39 Encoding And DotMap</span>
         </a>
       
     
@@ -411,6 +411,37 @@
 
   <footer>
     <div class="footer-inner">
+  <div>
+  <span id="timeDate">正在载入天数...</span>
+  <span id="times">载入时分秒...</span>
+  <script>
+  var now = new Date();
+  function createtime(){
+      var grt= new Date("10/18/2025 00:00:00");
+      now.setTime(now.getTime()+250);
+      days = (now - grt ) / 1000 / 60 / 60 / 24;
+      dnum = Math.floor(days);
+      hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+      hnum = Math.floor(hours);
+      if(String(hnum).length ==1 ){
+          hnum = "0" + hnum;
+      }
+      minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+      mnum = Math.floor(minutes);
+      if(String(mnum).length ==1 ){
+                mnum = "0" + mnum;
+      }
+      seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+      snum = Math.round(seconds);
+      if(String(snum).length ==1 ){
+                snum = "0" + snum;
+      }
+      document.getElementById("timeDate").innerHTML = "YushenFeb Blog已持续航行&nbsp"+dnum+"&nbsp天";  
+      document.getElementById("times").innerHTML = hnum + "&nbsp时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+  }
+  setInterval("createtime()",250);
+  </script>
+</div>
   
     <div class="footer-content">
        <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://yushenfeb.github.io/" target="_blank" rel="nofollow noopener"><span>YushenFeb Blog</span></a> 
