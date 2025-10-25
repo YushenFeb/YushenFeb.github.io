@@ -4,6 +4,35 @@
   
   
   <entry>
+    <title>基于Tshark的MPLS协议BAT分析工具 MPLS Protocol BAT Analysis Tool Based on Tshark</title>
+    <link href="/2025/10/25/MPLSAnalysis/"/>
+    <url>/2025/10/25/MPLSAnalysis/</url>
+    
+    <content type="html"><![CDATA[<h1 id="基于Tshark的MPLS协议BAT分析工具-MPLS-Protocol-BAT-Analysis-Tool-Based-on-Tshark"><a href="#基于Tshark的MPLS协议BAT分析工具-MPLS-Protocol-BAT-Analysis-Tool-Based-on-Tshark" class="headerlink" title="基于Tshark的MPLS协议BAT分析工具 MPLS Protocol BAT Analysis Tool Based on Tshark"></a>基于Tshark的MPLS协议BAT分析工具 MPLS Protocol BAT Analysis Tool Based on Tshark</h1><h2 id="一、MPLS协议简介"><a href="#一、MPLS协议简介" class="headerlink" title="一、MPLS协议简介"></a>一、MPLS协议简介</h2><p><img src="/2025/10/25/MPLSAnalysis/MPLSPrinciple.jpg" alt="MPLS Principle"></p><p>MPLS（多协议标签交换）是一种高性能、可扩展的、独立于协议的数据转发技术，它在OSI模型的第2层（数据链路层）和第3层（网络层）之间运行，因此被称为2.5层技术。</p><h3 id="1-MPLS的核心思想"><a href="#1-MPLS的核心思想" class="headerlink" title="1.MPLS的核心思想"></a>1.MPLS的核心思想</h3><p>MPLS的主要目标是结合第2层交换的简单、快速特性和第3层路由的灵活特性。</p><ul><li>传统 IP 转发： 路由器对每个数据包都进行复杂的最长匹配路由表查询，耗时较长（尤其是在早期硬件受限时）。</li><li>MPLS 转发： 在进入MPLS域时，通过一次路由查找将IP报文归类，并在其前面添加一个短而定长的标签。在MPLS域内，设备只需根据标签进行简单的交换（查找LFIB），无需再次检查复杂的IP报头，从而加速转发。</li></ul><h3 id="2-关键概念与术语"><a href="#2-关键概念与术语" class="headerlink" title="2.关键概念与术语"></a>2.关键概念与术语</h3><ul><li>标签(Label)：一个4字节的标识符，其中20比特是标签值。它只有本地意义（不同设备上标签值可以不同），用于标识一个FEC。</li><li>标签栈(Label Stack)：MPLS报文可以携带多层标签，这些标签以堆栈形式存在，决定转发的始终是栈顶标签。</li><li>标签头(Label Header)：4字节的MPLS封装，位于二层头和三层头之间。其中包含Label(20Bits),EXP&#x2F;TC(3Bits)用于QoS,S(1Bit)栈底位,TTL(8Bits)生存时间。</li><li>转发等价类(Forwarding Equivalence Class,FEC)：具有相同转发处理方式的一组报文（例如，所有发往同一目的地址的报文）。一个FEC对应一条LSP。</li><li>标签交换路径（Label Switched Path,LSP）：报文在MPLS网络中的一条单向转发路径，从入口LER到出口LER。LSP需要先建立才能转发数据。</li><li>标签交换路由器（Label Switch Router,LSR）：MPLS网络中的核心设备，负责基于标签进行转发（交换&#x2F;Swap）。</li><li>标签边缘路由器（Label Edge Router,LER）：又称 PE，位于MPLS网络的边界，连接IP网络，负责标签的压入(Push)和弹出(Pop)。</li><li>标签分发协议（Label Distribution Protocol,LDP）：最常用的控制平面协议，用于协商和分发标签，建立LSP。</li></ul><h3 id="3-标签转发动作"><a href="#3-标签转发动作" class="headerlink" title="3.标签转发动作"></a>3.标签转发动作</h3><p>数据包在MPLS网络中主要经历压入、交换和弹出三个基本操作，详细内容如下表所示。</p><table><thead><tr><th align="center">动作</th><th align="center">英文</th><th align="center">发生在</th><th align="center">描述</th></tr></thead><tbody><tr><td align="center">压入</td><td align="center">Push&#x2F;Impose</td><td align="center">入口LER</td><td align="center">收到IP报文，查找FEC，在IP报文前添加（压入）第一层或多层MPLS标签。</td></tr><tr><td align="center">交换</td><td align="center">Swap</td><td align="center">中间LSR</td><td align="center">收到带标签报文，根据入标签查找LFIB，将入标签替换为出标签，转发给下一跳。</td></tr><tr><td align="center">弹出</td><td align="center">Pop&#x2F;Dispose</td><td align="center">出口LER或倒数第二跳LSR</td><td align="center">移除标签，恢复成IP报文或下一层标签，转发给目的地。</td></tr><tr><td align="center">倒数第二跳弹出</td><td align="center">PHP(Penultimate Hop Popping)</td><td align="center">出口LER的上游LSR</td><td align="center">一种优化机制，在到达出口LER之前的一跳，就将标签弹出，减轻出口LER的处理负担。</td></tr></tbody></table><h3 id="4-MPLS优势与应用"><a href="#4-MPLS优势与应用" class="headerlink" title="4.MPLS优势与应用"></a>4.MPLS优势与应用</h3><ul><li>流量工程(TE)：可以强制数据流沿非最短路径转发，实现流量均衡和优化。</li><li>服务质量(QoS)：利用标签头中的EXP字段（3Bits）对不同业务流进行分类和优先级处理。</li><li>VPN服务：MPLS L3VPN（最主要的应用）和MPLS L2VPN，为客户提供隔离和互联的虚拟私有网络服务。</li><li>高性能：早期通过简化的标签交换查找，显著提高了转发效率（尽管随着硬件发展，这一优势已不那么明显，但其隧道能力仍是核心）。</li></ul><h2 id="二、基于Tshark的MPLS协议BAT分析工具"><a href="#二、基于Tshark的MPLS协议BAT分析工具" class="headerlink" title="二、基于Tshark的MPLS协议BAT分析工具"></a>二、基于Tshark的MPLS协议BAT分析工具</h2>]]></content>
+    
+    
+    <categories>
+      
+      <category>协议分析</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>协议分析</tag>
+      
+      <tag>Protocol Analysis</tag>
+      
+      <tag>MPLS Protocol</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>BIP39编码及点阵图 BIP39 Encoding And DotMap</title>
     <link href="/2025/10/25/BIP39/"/>
     <url>/2025/10/25/BIP39/</url>
