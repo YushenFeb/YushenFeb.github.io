@@ -28,7 +28,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://yushenfeb.github.io/img/MPLS.png">
 <meta property="article:published_time" content="2025-10-25T09:38:06.000Z">
-<meta property="article:modified_time" content="2025-11-22T16:14:23.921Z">
+<meta property="article:modified_time" content="2025-11-22T16:16:31.092Z">
 <meta property="article:author" content="YushenFeb">
 <meta property="article:tag" content="MPLS Protocol">
 <meta property="article:tag" content="Protocol Analysis">
@@ -353,7 +353,7 @@
 <li>VPN服务：MPLS L3VPN（最主要的应用）和MPLS L2VPN，为客户提供隔离和互联的虚拟私有网络服务。</li>
 <li>高性能：早期通过简化的标签交换查找，显著提高了转发效率（尽管随着硬件发展，这一优势已不那么明显，但其隧道能力仍是核心）。</li>
 </ul>
-<h2 id="二、基于Tshark的MPLS协议BAT分析工具"><a href="#二、基于Tshark的MPLS协议BAT分析工具" class="headerlink" title="二、基于Tshark的MPLS协议BAT分析工具"></a>二、基于Tshark的MPLS协议BAT分析工具</h2><h3 id="1-需求来源"><a href="#1-需求来源" class="headerlink" title="1.需求来源"></a>1.需求来源</h3><p>网络数据分析工程师在使用Wireshark对网络抓包数据开展分析时，往往需要对Pcap&#x2F;Cap数据中的用户进行聚类分析。最常用的方式便是通过MPLS协议对数据中的用户进行区分，再将具有同样MPLS标签组合的数据进行提取。具有相同MPLS标签组合的数据，通常被视为是同一用户所产生的数据，可对同一用户的数据进行聚类分析。在面对多用户混合数据且数据量较大时，聚类分析工作往往费时费力。在使用Tshark对Pcap&#x2F;Cap数据依据MPLS标签组合进行分片操作时，也难以针对批量cap&#x2F;Cap数据中多个MPLS组合进行自动化MPLS标签统计分析及数据分片聚类操作。针对此数据分析瓶颈，使用BAT语言编写了基于Tshark的MPLS协议分析工具（MPLS Analysis）。使用BAT语言进行开发的主要原因是，BAT语言无需额外的依赖环境，便于更加方便的直接移植使用。同时该基于Tshark的MPLS协议分析工具（MPLS Analysis）共具有两个版本，数据分析版本为MPLS Analysis，统计分析版本为MPLS Analysis Only Txt。</p>
+<h2 id="二、基于Tshark的MPLS协议BAT分析工具"><a href="#二、基于Tshark的MPLS协议BAT分析工具" class="headerlink" title="二、基于Tshark的MPLS协议BAT分析工具"></a>二、基于Tshark的MPLS协议BAT分析工具</h2><h3 id="1-需求来源"><a href="#1-需求来源" class="headerlink" title="1.需求来源"></a>1.需求来源</h3><p>网络数据分析工程师在使用Wireshark对网络抓包数据开展分析时，往往需要对Pcap&#x2F;Cap数据中的用户进行聚类分析。最常用的方式便是通过MPLS协议对数据中的用户进行区分，再将具有同样MPLS标签组合的数据进行提取。具有相同MPLS标签组合的数据，通常被视为是同一用户所产生的数据，可对同一用户的数据进行聚类分析。在面对多用户混合数据且数据量较大时，聚类分析工作往往费时费力。在使用Tshark对Pcap&#x2F;Cap数据依据MPLS标签组合进行分片操作时，也难以针对批量cap&#x2F;Cap数据中多个MPLS组合进行自动化MPLS标签统计分析及数据分片聚类操作。针对此数据分析瓶颈，使用BAT语言编写了基于Tshark的MPLS协议分析工具（MPLS Analysis）。使用BAT语言进行开发的主要原因是，BAT语言无需额外的依赖环境，便于更加方便的直接移植使用。同时该基于Tshark的MPLS协议分析工具（MPLS Analysis）共具有两个版本，数据分析版本为MPLS Analysis，统计分析版本为MPLS Analysis OnlyTxt。</p>
 <h3 id="2-版本区别"><a href="#2-版本区别" class="headerlink" title="2.版本区别"></a>2.版本区别</h3><h3 id="3-使用方式"><a href="#3-使用方式" class="headerlink" title="3.使用方式"></a>3.使用方式</h3><h3 id="4-源代码"><a href="#4-源代码" class="headerlink" title="4.源代码"></a>4.源代码</h3><ul>
 <li><h4 id="数据分析版本（MPLS-Analysis）源代码"><a href="#数据分析版本（MPLS-Analysis）源代码" class="headerlink" title="数据分析版本（MPLS Analysis）源代码"></a>数据分析版本（MPLS Analysis）源代码</h4></li>
 </ul>
@@ -362,7 +362,7 @@
 
 
 <ul>
-<li><h4 id="统计分析版本（MPLS-Analysis-Only-Txt）源代码"><a href="#统计分析版本（MPLS-Analysis-Only-Txt）源代码" class="headerlink" title="统计分析版本（MPLS Analysis Only Txt）源代码"></a>统计分析版本（MPLS Analysis Only Txt）源代码</h4></li>
+<li><h4 id="统计分析版本（MPLS-Analysis-OnlyTxt）源代码"><a href="#统计分析版本（MPLS-Analysis-OnlyTxt）源代码" class="headerlink" title="统计分析版本（MPLS Analysis OnlyTxt）源代码"></a>统计分析版本（MPLS Analysis OnlyTxt）源代码</h4></li>
 </ul>
 <figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs BAT">@<span class="hljs-built_in">echo</span> off<br><span class="hljs-built_in">setlocal</span> enabledelayedexpansion<br><br><span class="hljs-built_in">echo</span> <span class="hljs-variable">%DATE%</span><br><span class="hljs-built_in">echo</span> <span class="hljs-variable">%TIME%</span><br><span class="hljs-built_in">echo</span>.<br><span class="hljs-built_in">echo</span> Welcome To MPLS Analysis Tool OnlyTxt By Yushen.<br><span class="hljs-built_in">echo</span> Please Input According To The Interactive Prompt.<br><span class="hljs-built_in">echo</span>.<br><br>:: 提示用户输入Tshark绝对路径<br><span class="hljs-built_in">set</span> /p tshark_path=&quot;Enter The Absolute <span class="hljs-built_in">Path</span> To Tshark.exe&quot;<br><span class="hljs-built_in">echo</span>.<br><br>:: 检查Tshark是否存在<br><span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> <span class="hljs-keyword">exist</span> &quot;<span class="hljs-variable">%tshark_path%</span>&quot; (<br>	<span class="hljs-built_in">echo</span> Error: Tshark.exe <span class="hljs-keyword">Not</span> Found <span class="hljs-built_in">At</span> The Specified <span class="hljs-built_in">Path</span>.<br>	<span class="hljs-keyword">goto</span> :end<br>)<br></code></pre></td></tr></table></figure>
 
